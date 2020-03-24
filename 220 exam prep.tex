@@ -1,0 +1,491 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\ExecuteOptions{a4paper}
+\addtolength{\oddsidemargin}{-2cm}  
+\addtolength{\evensidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm} 
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{4.5cm}
+\addtolength{\headheight}{9pt}
+\addtolength{\footskip}{9pt}
+\setlength{\parskip}{0.3cm plus1mm minus1mm}
+\parindent0pt
+
+
+
+\begin{document}
+\title{COMPSCI220 Definitions}
+\date{}
+\maketitle
+
+
+\section{Algorithm analysis}
+\subsection*{How to measure running time? - L3}
+\textbf{3.1} - Define notion of input size on the data. Positive integer 
+(e.g. \# of records in a database to be sorted).  Elementary operation 
+is basic measuring unit of running time. Any operation whose execution 
+time doesn’t depend on input size. 
+\begin{center}
+    \begin{tabular}{||c c c c c c||} 
+    \hline
+    Running time & & & & Input size  \\ [0.5ex] 
+    \hline
+    Function & Notation & 10 & 100 & 1000 & $10^7$ \\ 
+    \hline
+    Constant & 1 & 1 & 1 & 1 & 1 \\
+    \hline
+    Logarithmic & $lg(n)$ & 1 & 2 & 3 & 7 \\
+    \hline
+    Linear & $n$ & 1 & 10 & 100 & $10^6$ \\
+    \hline
+    Linearithmic” & $n\ lg(n)$ & 1 & 20 & 300 & $7 \times 10^6$ \\ 
+    \hline
+    Quadratic & $n^2$ & 1 & 100 & 10000 & $10^{12}$ \\
+    \hline
+    Cubic & $n^3$ & 1 & 1000 & $10^6$ & $10^{18}$ \\
+    \hline
+    Exponential & $2^n$ & 1 & $10^{27}$ & $10^{298}$ & $10^{3010296}$ \\ 
+    \hline
+   \end{tabular}
+\end{center}
+
+\subsection*{Asymptotic notation - L5}
+\textbf{5.1} - Suppose that $f$ and $g$ are functions from $\mathbb{N}$ to $\mathbb{R}$, which take on
+non-negative values.
+\begin{itemize}
+\item $f$ is $O(g)$ if there is some $C > 0$ and some $n_0 \in \mathbb{N}$ such
+that for all $n \geq n_0, f(n) \leq Cg(n)$ \\
+Informally, $f/g$ is eventually bounded away from infinity, and $f$ grows at
+most as fast as $g$.
+\item $f$ is $\Omega (g)$ if $g$ is $O(f)$ \\
+Informally, $f/g$ is eventually bounded away from zero, and $f$ grows at least
+as fast as $g$.
+\item $f\ is\ \Theta(g)$ if $f$ is $O(g)$ and $g$ is $O(f)$.\\
+Informally, $f/g$ is bounded away from zero and infinity, and $f$ grows at the
+same rate as $g$.
+\end{itemize}
+
+
+\section{Analysis of sorting}
+\subsection*{The problem of sorting, selection sort - L7}
+\textbf{7.1} - Given $n$ keys $a_1,...,a_n$ from a totally ordered set, put them in increasing
+order. The keys may be just part of a larger data record.\\\\
+\textbf{7.2} - A sorting algorithm is \textbf{comparison-based} if it only uses the order
+relation to compare keys.\\\\
+\textbf{7.3} - A sorting algorithm is \textbf{in-place} if it only uses fixed additional space,
+independent of $n$. It is \textbf{stable} if records with equal keys have their order unchanged
+by the algorithm.
+
+\subsection*{Recurrences - L10}
+\textbf{10.1} - A \textbf{recurrence relation} is an equation that
+defines an unknown function $F$ recursively. The value $F(n)$ is determined by the
+values $F(0), F(1),..., F(n - 1)$ for sufficiently large $n$. The smaller values of $n$ are
+called the \textbf{initial conditions}.
+\subsubsection*{Special cases}
+\textbf{Tower of Hanoi:} $T(n) = 2T(n - 1) + 1, T(1) = 0$\\
+\textbf{Searching a linked list:} $T(n) = T(n-1)+1, T(0) =0$\\
+\textbf{Insertion sort:} $T(n)=T(n/2)+1,T(0)=0$\\
+\textbf{Binary serach:} $T(n)=T(n/2) +1, T(1)=0$ makes sense when n is a power of 2.\\
+\textbf{Mergesort:} $T(n)=2T(n/2)+n, T(1)=0$ makes sense when n is a power of 2.\\
+\textbf{Quicksort:} $T(n)=(2/n)\sum_{i<n}T(i)+n-1, T(1)=0$
+
+\subsection*{Priority queues and heapsort - L13}
+\textbf{13.1} - A priority queue is a container ADT where each element has a
+key (from a totally ordered set, as with sorting) called its priority. There are operations
+allowing us to insert an element, and to find and delete the element of
+highest priority. Priority queues can be implemented
+in many ways: unsorted list, sorted list, binary heap, binomial heap, \dots\\\\
+\textbf{13.3} - A \textbf{binary heap} is a binary tree that
+\begin{itemize}
+    \item is \textbf{left-complete} (every level except perhaps the last is full and the last level
+    is left-filled);
+    \item has the \textbf{partial order property} (on every path from the root, the keys decrease).
+\end{itemize}
+
+\subsection*{Data selection and quickselect - L14}
+\begin{center}
+    \begin{tabular}{||c c c c c c||} 
+    \hline
+    Method & Worst & Average & Best & Stable? & In-place?  \\ [0.5ex] 
+    \hline
+    Insertion & $n^2$ & $n^2$ & $n$ & Yes & Yes \\ 
+    \hline
+    Selection & $n^2$ & $n^2$ & $n^2$ & No & Yes \\
+    \hline
+    Shellsort & ?? & ?? & $n$ & No & Yes \\
+    \hline
+    Mergesort & $n\ log(n)$ & $n\ log(n)$ & $n\ log(n)$ & Yes & No \\
+    \hline
+    Quicksort & $n^2$ & $n\ log(n)$ & $n\ log(n)$ & No & Almost \\ 
+    \hline
+    Heapsort & $n\ log(n)$ & $n\ log(n)$ & $n\ log(n)$ & No & Yes \\
+    \hline
+   \end{tabular}
+\end{center}
+
+
+\section{Analysis of searching}
+\subsection*{Searching, BSTs - L15} 
+\textbf{15.1} - A table is an ADT that supports operations to insert, retrieve and
+delete an element with given search key. Another name is dictionary. Could be
+implemented with an unsorted list, with a sorted list, with a (balanced) binary
+search tree, with a hash table.\\\\
+\textbf{15.2} - A binary search tree (BST) is a binary tree with keys stored in
+nodes, such that the key of each node is $\geq$ the key of every node in the left subtree
+and $\leq$ the key of every node in the right subtree.\\To remove a node:
+\begin{itemize}
+    \item A node with no children: simply delete.
+    \item A node with only one child: delete the node, connect the child to the parent.
+    \item A node $n$ with two children: find the minimum key $K$ in the right subtree,
+    delete that node, and replace the key of $n$ by $K$.
+\end{itemize}
+
+\subsection*{Hashing - L17}
+\textbf{17.1} - A \textbf{hash function} is a function $h$ that outputs an integer value for
+each key. A \textbf{hash table} is an array implementation of the table ADT, where each
+key is mapped via a hash function to an array index.
+\subsubsection*{Collision resolution policies}
+\textbf{Chaining} uses an “overflow” list for each element in the hash table.\\
+\textbf{Open addressing} uses no extra space. Every element is stored in the hash
+table. If it gets overfull, we can reallocate space and rehash.\\\\
+When ccollision occurs in open addressing, we:
+\begin{itemize}
+    \item \textbf{probe} nearby for a free position (linear probing, quadratic probing,\dots)
+    \item \textbf{double hash} by going to a “random” position by using a second-level hash function.
+    \item We \textbf{employ the convention that we always probe to the left}
+\end{itemize}
+
+\subsection*{Universal hashing - L19}
+\subsubsection*{Table implementations}
+\begin{center}
+    \textbf{Worst case running time}\\
+    \begin{tabular}{||c c c c c||} 
+    \hline
+    Data structure & Insert & Find & Delete & Traverse \\ [0.5ex] 
+    \hline
+    Unsorted list (array) & 1 & $n$ & $n$ &  $n$ \\ 
+    \hline
+    Unsorted list (pointer) & 1 & $n$ & $n$ &  $n$\\
+    \hline
+    Sorted list (array) & $n$ & $log(n)$ & $n$ &  $n$\\
+    \hline
+    Sorted list (pointer) & $n$ & $n$ & $n$ &  $n$\\
+    \hline
+    Binary search tree & $n$ & $n$ & $n$ &  $n$\\ 
+    \hline
+    Balanced BST & $log(n)$ & $log(n)$ & $log(n)$ &  $n$\\
+    \hline
+    Hash table (chaining) & $n$ & $n$ & $n$ &  $m+n$\\
+    \hline
+   \end{tabular}
+\end{center}
+\begin{center}
+    \textbf{Average case running time}\\
+    \begin{tabular}{||c c c c c||} 
+    \hline
+    Data structure & Insert & Find & Delete & Traverse \\ [0.5ex] 
+    \hline
+    Unsorted list (array) & 1 & $n$ & $n$ &  $n$ \\ 
+    \hline
+    Unsorted list (pointer) & 1 & $n$ & $n$ &  $n$\\
+    \hline
+    Sorted list (array) & $n$ & $log(n)$ & $n$ &  $n$\\
+    \hline
+    Sorted list (pointer) & $n$ & $n$ & $n$ &  $n$\\
+    \hline
+    Binary search tree & $log(n)$ & $log(n)$ & $log(n)$ &  $n$\\ 
+    \hline
+    Balanced BST & $log(n)$ & $log(n)$ & $log(n)$ &  $n$\\
+    \hline
+    Hash table (chaining) & $\lambda$ & $\lambda$ & $\lambda$ &  $m+n$\\
+    \hline
+   \end{tabular}
+\end{center}
+
+
+\section{The graph abstract data type}
+\subsection*{Graph Definitions - L20}
+\textbf{20.1} - A \textbf{digraph} $G = (V, E)$ is a finite nonempty set $V$ of \textbf{nodes} together
+with a (possibly empty) set $E$ of ordered pairs of nodes of $G$ called \textbf{arcs}. Digraph
+stands for directed graph.\\\\
+\textbf{20.2} - A \textbf{graph} $G = (V, E)$ is a finite nonempty set $V$ of vertices together
+with a (possibly empty) set $E$ of unordered pairs of vertices of $G$ called \textbf{edges}. Note
+that the singular of vertices is vertex.\\\\
+\textbf{20.3} - If $(u, v) \in E$ (that is, if there is an arc going from $u$ to $v$) we say that
+$v$ is \textbf{adjacent} to $u$, that $v$ is an \textbf{out-neighbour} of $u$, and that $u$ is an \textbf{in-neighbour}
+of $v$. In an (undirected) graph $G$, if $\{u, v\} \in E$, then $u$ is a \textbf{neighbour} of $v$ and $v$ is a
+neighbour of $u$.\\\\
+\textbf{20.4} - The \textbf{order} of a digraph $G = (V, E)$ is $|V|$, the number of nodes.
+The \textbf{size} of $G$ is $|E|$, the number of arcs. We usually use $n$ to denote $|V|$ and $m$ to
+denote $|E|$.\\\\
+\textbf{20.5} - If $m$ is toward the low end, the digraph is called \textbf{sparse}, and if $m$ is
+toward the high end, then the digraph is called \textbf{dense}. For our purposes we will call a class of digraphs sparse if $m$ is $O(n)$
+and dense if $m$ is $\Omega(n^2)$.\\\\
+\textbf{20.6} - A \textbf{walk} in a digraph $G$ is a sequence of nodes $v_0 v_1 \dots v_l$ such
+that, for each $i$ with $0 \leq i < l, (v_i, v_{i+1})$ is an arc in $G$.\\
+The \textbf{length} of the walk $v_0 v_1 \dots v_l$ is the number $l$ (that is, the number of arcs involved).\\
+A \textbf{path} is a walk in which no node is repeated.
+A \textbf{cycle} is a walk in which $v_0 = v_l$ and no other nodes are repeated. (must be at least length 3)\\\\
+\textbf{20.7} - In a graph, the \textbf{degree} of a vertex $v$ is the number of edges meeting
+$v$. In a digraph, the \textbf{outdegree} of a node $v$ is the number of out-neighbours of
+$v$, and the \textbf{indegree} of $v$ is the number of in-neighbours of $v$.
+A node of indegree 0 is called a \textbf{source} and a node of outdegree 0 is called a \textbf{sink}.\\\\
+\textbf{20.8} - The distance from $u$ to $v$ in $G$, denoted by $d(u, v)$, is the number
+of arcs on a shortest path from $u$ to $v$. If no path from $u$ to $v$ exists, the distance is
+undefined (or +$\infty$).
+For graphs, we have $d(u, v)=d(v, u)$ for all verticies $u, v$\\\\
+\textbf{20.9} - A \textbf{subdigraph} of a digraph $G = (V, E)$ is a digraph $G' = (V', E')$
+where $V' \subseteq V$ and $E' \subseteq E$. A \textbf{spanning} subdigraph is one with $V' = V$; that is, it
+contains all nodes.\\\\
+\textbf{20.10} - The subdigraph \textbf{induced} by a subset $V'$ of $V$ is the digraph $G' =(V', E')$ 
+where $E' = \{f(u, v) \in E | u \in V'$ and $v \in V'\}$\\\\
+\textbf{20.11} - The \textbf{reverse digraph} of the digraph $G = (V, E)$, is the digraph
+$G_r = (V, E')$ where $(u, v) \in E'$ if and only if $(v, u) \in E$.\\\\
+\textbf{20.12} - The \textbf{underlying graph} of a digraph $G = (V, E)$ is the graph $G' =(V, E')$
+where $E' = \{\{u, v\} | (u, v) \in E\}$.\\\\
+\textbf{20.13} - We can combine two or more digraphs $G_1,G_2,\dots G_k$ into a single
+graph where the vertices of each $G_i$ are completely disjoint from each other
+and no arc goes between the different $G_i$. The constructed graph $G$ is called the
+\textbf{graph union}, where $V(G) = V(G_1)\cup V(G_2) \cup \dots \cup V(G_k)$ and 
+$E(G) = E(G_1)\cup E(G_2) \cup \dots \cup E(G_k)$.
+
+\subsection*{Graph data structures - L21}
+\textbf{21.1} - Let $G$ be a digraph of order $n$. The \textbf{adjacency matrix} of $G$ is the
+$n \times n$ Boolean matrix such that entry $(i, j)$ is true if
+and only if there is an arc from the node $i$ to node $j$.\\\\
+\textbf{21.2} - For a digraph $G$ of order $n$, an adjacency lists representation is
+a sequence of $n$ sequences, $L_0,\dots ,L_{n-1}$. Sequence $L_i$ contains all nodes of $G$ that
+are out-neighbours of node $i$.
+\begin{center}
+    \textbf{Worst case performace}\\
+    \begin{tabular}{||c c c||} 
+    \hline
+    Operation & Adjacency matrix & Adjacency list \\ [0.5ex] 
+    \hline
+    arc $(i, j)$ exists? & $\Theta(1)$ & $\Theta(d)$\\ 
+    \hline
+    outdegree of $i$ & $\Theta(n)$ & $\Theta(1)$\\
+    \hline
+    indegree of $i$ & $\Theta(n)$ & $\Theta(n+m)$ \\
+    \hline
+    add arc $(i,j)$ & $\Theta(1)$ & $\Theta(1)$\\
+    \hline
+    delete arc $(i,j)$ & $\Theta(1)$ & $\Theta(d)$  \\ 
+    \hline
+    add node & $\Theta(n)$ & $\Theta(1)$ \\
+    \hline
+    delete node $i$ & $\Theta(n^2)$ & $\Theta(n+m)$\\
+    \hline
+   \end{tabular}
+   \\$d$ denotes size of adjacency list for vertex $i$
+\end{center}
+
+
+\section{Graph traversals and applications}
+\subsection*{Graph traversal algorithms - L22}
+\textbf{22.1} - Suppose we have performed a traversal of a digraph $G$, resulting
+in a search forest $F$. Let $(u, v) \in E(G)$ be an arc. Then $(u, v)$ is a
+\begin{itemize}
+    \item \textbf{tree arc} if it belongs to one of the trees of $F$
+    \item \textbf{forward arc} if $u$ is an ancestor of $v$ in $F$
+    \item \textbf{back arc} if $u$ is a descendant of $v$ in $F$
+    \item \textbf{cross arc} if neither $u$ nor $v$ is an ancestor of the other in $F$
+\end{itemize}
+\textbf{Theorem 22.1} - Suppose that we have carried out traverse on $G$, resulting in a
+search forest $F$. Let $v, w \in V(G)$.
+\begin{itemize}
+    \item Let $T_1$ and $T_2$ be different trees in $F$ and suppose that $T_1$ was explored before
+    $T_2$. Then there are no arcs from $T_1$ to $T_2$.
+    \item Suppose that $G$ is a graph. Then there can be no edges joining different trees
+    of $F$.
+    \item Suppose that $v$ is visited before w and w is reachable from v in G. Then $v$ and
+    $w$ belong to the same tree of $F$.
+    \item Suppose that $v$ and $w$ belong to the same tree $T$ in $F$. Then any path from $v$
+    to $w$ in $G$ must have all nodes in $T$.
+\end{itemize}
+
+\subsection*{Depth-first search (DFS) - L23}
+\textbf{23.1} - In \textbf{DFS} the new grey node chosen is the one
+that has been grey for the shortest time. \\
+DFS takes us away from the root node as quickly as possible. If the first visited
+neighbour of the root has a neighbour,we immediately visit that neighbour. Then,
+if that has a neighbour, we visit that and so on, thus “deeply” searching as far away
+from the root as possible. We backtrack as little as possible before continuing
+away from the root again. The root is the last node to turn black. Convention is to choose
+grey node with lowest index.\\\\
+\textbf{Theorem 23.1} - Suppose that we have performed DFS on a digraph $G$, resulting in
+a search forest $F$. Let $v, w \in V(G)$ and suppose that seen[$v$] $<$ seen[$w$].
+\begin{itemize}
+    \item If $v$ is an ancestor of $w$ in $F$, then
+    \begin{center}
+        seen[$v$] $<$ seen[$w$] $<$ done[$w$] $<$ done[$v$]        
+    \end{center}
+    \item If $v$ is not an ancestor of $w$ in $F$, then
+    \begin{center}
+        seen[$v$] $<$ done[$v$] $<$ seen[$w$] $<$ done[$w$]            
+    \end{center}
+\end{itemize}
+
+\subsection*{Breadth-first search (BFS) and priority-first search (PFS) - L24}
+\textbf{24.1} - In BFS the new grey node chosen is the
+one that has been grey for the longest time.\\
+BFS takes us away from the root node as slowly as possible. First we visit the root,
+then all its neighbours, then all neighbours of its neighbours and so on. The root
+is the first node to turn black.\\\\
+\textbf{Theorem 24.1} - Suppose we run BFS on a digraph $G$. Let $v \in V(G)$, and let $r$ be the
+root of the search tree containing $v$. Then $d[v] = d(r, v)$\\\\
+\textbf{Theorem 24.2} - Suppose that we are performing BFS on a digraph $G$. Let $(v, w) \in E(G)$
+and suppose that we have just chosen the grey node $v$. Then
+\begin{itemize}
+    \item if $(v,w)$ is a tree arc then $colour[w]$ = WHITE, $d[w] = d[v] + 1$;
+    \item if $(v, w)$ is a back arc, then $colour[w]$ = BLACK, $d[w] \leq d[v] + 1$;
+    \item there are no forward arcs; and
+    \item if $(v, w)$ is a cross arc then one of the following holds:
+    \begin{itemize}
+        \item $d[w] < d[v] - 1$, and $colour[w]$ = BLACK;
+        \item $d[w] = d[v]$, and $colour[w]$ = GREY;
+        \item $d[w] = d[v]$, and $colour[w]$ = BLACK;
+        \item $d[w] = d[v] - 1$, and $colour[w]$ = GREY;
+        \item $d[w] = d[v] - 1$, and $colour[w]$ = BLACK;
+    \end{itemize}
+\end{itemize}
+\textbf{Theorem 24.3} -   Suppose that we are performing BFS on a digraph $G$. Let $\{v, w\} \in E(G)$
+Then exactly one of the following conditions holds
+\begin{itemize}
+    \item $\{v, w\}$ is a tree edge, $|d[w] - d[v]| = 1$;
+    \item $\{v, w\}$ is a cross edge, $d[w] = d[v];$
+    \item $\{v, w\}$ is a cross edge, $|d[w] - d[v]| = 1$
+\end{itemize}
+
+\subsection*{Topological sort, acyclic graphs and girth - L25}
+\textbf{25.1} - Let $G$ be a digraph. A \textbf{topological sort} of $G$ is a linear ordering of
+all its vertices such that if $G$ contains an arc $(u, v)$, then $u$ appears before $v$ in the
+ordering. It is also known as a \textbf{topological order} or \textbf{linear order}.\\\\
+\textbf{25.2} - A digraph without cycles is commonly called a \textbf{DAG}, an abbreviation
+for directed acyclic graph\\\\
+\textbf{Theorem 25.1} - A digraph has a topological order if and only if it is a DAG.\\\\
+\textbf{Theorem 25.2} - Suppose that DFS is run on a digraph $G$. Then $G$ is acyclic if and
+only if there are no back arcs.\\\\
+\textbf{Theorem 25.3} - Let $G$ be a DAG. Then listing the nodes in reverse order of DFS
+finishing times yields a topological order of $G$.\\\\
+\textbf{25.3} - The \textbf{girth} of the graph is the length of the shortest cycle. If the
+graph has no cycles then the girth is undefined but may be viewed as $+\infty$.\\
+For a digraph we use the term girth for its underlying graph and the (maybe nonstandard)
+term \textbf{directed girth} for the length of the smallest directed cycle.
+
+\subsection*{Finding girth using BFS, connectivity, and components - L26}
+\textbf{26.1} - A graph is \textbf{connected} if for each pair of vertices $u, v \in V(G)$, there
+is a path between them.\\\\
+\textbf{Theorem 26.1} - Let $G$ be a graph. Then $G$ can be uniquely written as a union of
+subgraphs $G_i$ such that
+\begin{itemize}
+    \item each $G_i$ is connected, and
+    \item if $i \neq j$, there are no edges from any vertices in $G_i$ to any vertices in $G_j$.
+\end{itemize}
+The subgraphs $G_i$ are called the connected components of the graph $G$.
+A graph is connected if and only if it has exactly one connected component.\\\\
+\textbf{Theorem 26.2} - Let $G$ be a graph and suppose that DFS or BFS is run on $G$. Then
+the connected components of $G$ are precisely the subgraphs spanned by the trees
+in the search forest.\\\\
+\textbf{26.2} - A digraph $G$ is \textbf{strongly connected} if for each pair of nodes $u, v$
+of $G$, there is a path in $G$ from $u$ to $v$ and from $v$ to $u$ (that is, $u$ and $v$ are reachable
+from one another).\\\\
+\textbf{26.3} - A \textbf{strongly connected component}, $G_i$ , of $G$ is a maximal subdigraph
+of $G$ such that $G_i$ is strongly connected. All nodes of $G$ are in exactly one
+such $G_i$ , so the partition into strongly connected components is unique.
+
+\subsection*{Finding strong components, and bipartite graphs - L27}
+\textbf{27.1} - A graph $G$ is bipartite if $V(G)$ can be partitioned into two nonempty
+disjoint subsets $V_0$ and $V_1$ such that each edge of $G$ has one endpoint in $V_0$ and one
+in $V_1$.\\\\
+\textbf{27.2} - Let $k$ be a positive integer. A graph $G$ has a \textbf{$k$-colouring} if $V(G)$
+can be partitioned into $k$ nonempty disjoint subsets such that each edge of $G$ joins
+two vertices in different subsets.\\\\
+\textbf{Theorem 27.1} - The following conditions on a graph $G$ are equivalent.
+\begin{itemize}
+    \item $G$ is bipartite.
+    \item $G$ has a 2-colouring.
+    \item $G$ does not contain an odd length cycle.
+\end{itemize}
+
+
+\section{Weighted digraphs and optimisation problems}
+\subsection*{Weighted graphs, the single-source shortest paths problem, Dijkstra - L28}
+\textbf{28.1} - A \textbf{weighted digraph} is a pair $(G, c)$ where $G$ is a digraph and $c$ is
+a \textbf{cost function} associating a real number to each arc of $G$. For an arc $(u, v)$, we
+interpret $c(u, v)$ as the cost of using $(u, v)$.\\\\
+\textbf{28.2} - The \textbf{diameter} of a strongly connected digraph $G$ is the maximum
+of $d(u, v)$ over all nodes $u, v \in V(G)$. If the digraph is not strongly connected the
+diameter is undefined though can be set to $\infty$.\\\\
+\textbf{28.3} - In the \textbf{ single-source shortest path problem} (SSSP) we are given
+a weighted digraph $(G, c)$ and a source node $s$. For each node $v$ of $G$, we must find
+the minimum weight of a path from $s$ to $v$. By the weight of a path we mean the
+sum of the weights on the arcs. This is like finding row $s$ in a weighted distance
+matrix.\\\\
+\textbf{Dijkstra’s algorithm} - solves the SSSP problem whenever \textbf{all weights are nonnegative}.\\
+It may fail in the presence of negative weight arcs.\\
+It is easiest to understand the algorithm in terms of a set of visited nodes $S$, which
+eventually includes all nodes in $G$. We’ll consider only shortest paths through $S$.
+Once $S = V(G)$, all shortest path lengths are known.\\
+Initially $S$ contains only the single node $s$. The only paths available are the one arc
+paths from $s$ to neighbours $v$, of weight $c(s, v)$. We choose the neighbour $u$ with
+$c(s, u)$ minimal and add it to $S$.\\
+Now the fringe nodes adjacent to $s$ and $u$ must be updated to reflect possible paths
+through $u$ (it is possible that there exists a path from $s$ to $v$, passing through $u$, that
+is shorter than the direct path from $s$). Now we choose the node whose current
+best distance to $s$ is smallest, and update again. We continue in this way until all
+nodes belong to $S$.
+
+\subsection*{Dijkstra proof and running time - L29}
+\textbf{Theorem 29.1} - Suppose that all arc weights are non-negative. Then at the top of
+the while loop, we have the following properties:\\
+\textbf{P1:} If $x \in V(G)$, then dist[$x$] is the minimum cost of an $S$-path from $s$ to $x$.\\
+\textbf{P2:} If $w \in S$, then dist[$w$] is the minimum cost of a path from $s$ to $w$.\\
+At every step, dist[$x$] is the length of some path from $s$ to $x$, or $\infty$. That path is
+an $S$-path if $x \in S$. Also note that the update formula ensures that dist[$x$] never
+increases.
+   
+\subsection*{Dijkstra and PFS, Bellman-Ford algorithm - L30}
+\textbf{Theorem 30.1} - Suppose that $G$ contains no negative weight cycles. Then after
+the $i$-th iteration of the outer for-loop, dist[$v$] contains the minimum weight of a
+path to $v$ for all nodes $v$ with level at most $i$.\\
+Level means the minimum possible number of arcs in a minimum
+weight path to that node from the source.
+
+\subsection*{All-pairs shortest path problem - L31}
+\textbf{31.1} - In the \textbf{ all-pairs shortest path problem} (APSP) we are given a
+weighted digraph $(G, c)$, and must determine for each $u, v \in V(G)$ the weight of a
+minimum weight path from $u$ to $v$.
+
+\subsection*{Minimum spanning tree problem - L32}
+\textbf{32.1} - A \textbf{spanning tree} of a graph $G$ is a subgraph of $G$ that spans $G$
+(contains all nodes of $G$) and is a tree (a connected, acyclic graph).\\
+Let $G$ be a weighted graph. A \textbf{minimum spanning tree} (MST) is a spanning tree
+for $G$ which has minimum total weight (sum of all edge weights).\\
+In the \textbf{minimum spanning tree problem} we have to find a weighted graph $G$ is to
+find a MST for $G$.\\\\
+\textbf{Prim's algorithm}
+\begin{itemize}
+    \item Start at any vertex.
+    \item Choose at each step an edge of minimum weight from the remaining edges
+    ensuring that
+    \begin{itemize}
+    \item adding the edge does not create a cycle in the subgraph built so far; and
+    \item the subgraph built so far is connected.
+    \end{itemize}
+    \item Stop when the tree is a spanning tree.
+\end{itemize}
+\textbf{Kruskal's algorithm}
+\begin{itemize}
+    \item Start with an empty set of edges.
+    \item At each step choose an edge of minimum weight from the remaining edges
+    ensuring that adding the edge does not create a cycle in the subgraph built
+    so far.
+    \item Stop when the subgraph is spanning tree.
+\end{itemize}
+
+
+\end{document}
