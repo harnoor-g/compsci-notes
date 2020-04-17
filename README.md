@@ -1,2 +1,1 @@
-# compsci220-notes
-notes from compsci 220
+# compsci-notes
